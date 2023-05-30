@@ -1,69 +1,77 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import axios from 'axios';
-import { Network, NetworkStatus } from '@capacitor/network';
-import React, { useEffect, useState } from 'react';
+import { IonButton, IonContent, IonHeader, IonModal, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { Browser } from '@capacitor/browser';
+import { App } from '@capacitor/app';
+import React, { useState } from 'react';
+
 
 const Tab4: React.FC = () => {
-  const [characters, setCharacters] = useState([]);
-  const [networkStatus, setNetworkStatus] = useState<NetworkStatus | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [appInfo, setAppInfo] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchCharacters = async () => {
-      try {
-        const response = await axios.get('https://rickandmortyapi.com/api/character');
-        setCharacters(response.data.results);
-      } catch (error) {
-        console.log('Error al obtener los personajes:', error);
-      }
-    };
+  const getAppInfo = async () => {
+    const info = await App.getInfo();
+    setAppInfo(info);
+    setShowModal(true);
+  };
 
-    fetchCharacters();
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
-    const networkListener = Network.addListener('networkStatusChange', (status: NetworkStatus) => {
-      setNetworkStatus(status);
-    });
+  const exitApp = () => {
+    App.exitApp();
+  };
 
-    return () => {
-      networkListener.remove();
-    };
-  }, []);
+  const openExternalUrl = () => {
+    Browser.open({ url: 'https://www.example.com' });
+  };
+
+  const openAppUrl = () => {
+    Browser.open({ url: 'myapp://example' })
+      .then(() => {
+        console.log('URL abierta en otra aplicación.');
+      })
+      .catch((error) => {
+        console.log('No se puede abrir la URL en otra aplicación:', error);
+      });
+  };
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Lista de Personajes</IonTitle>
+          <IonTitle>Tab 4</IonTitle>
         </IonToolbar>
-        {networkStatus && (
-          <IonToolbar>
-            <IonTitle>
-              {networkStatus.connected ? 'Conectado a Internet' : 'Sin conexión'}
-              <br />
-              Tipo de conexión: {networkStatus.connectionType}
-            </IonTitle>
-          </IonToolbar>
-        )}
       </IonHeader>
       <IonContent>
-        <IonGrid>
-          {characters.map((character) => (
-            <IonCard key={character.id} size="12" sizeXs="6" sizeSm="4" sizeMd="3">
-              <img src={character.image} alt={character.name} />
-              <IonCardHeader>
-                <IonCardTitle>{character.name}</IonCardTitle>
-                <IonCardSubtitle>{character.species}</IonCardSubtitle>
-              </IonCardHeader>
-              <IonCardContent>
-                <p>Status: {character.status}</p>
-                <p>Location: {character.location.name}</p>
-              </IonCardContent>
-            </IonCard>
-          ))}
-        </IonGrid>
+        <IonButton onClick={getAppInfo}>Obtener información de la aplicación</IonButton>
+        <IonButton onClick={exitApp}>Salir de la aplicación</IonButton>
+        <IonButton onClick={openExternalUrl}>Abrir URL externa</IonButton>
+        <IonButton onClick={openAppUrl}>Abrir otra aplicación</IonButton>
+
+        <IonModal isOpen={showModal}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Información de la aplicación</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            {appInfo && (
+              <div>
+                <p>Nombre: {appInfo.name}</p>
+                <p>Versión: {appInfo.version}</p>
+                <p>Identificador del paquete: {appInfo.packageName}</p>
+                <p>Entorno de compilación: {appInfo.buildType}</p>
+                {/* Agrega más propiedades según la información que desees mostrar */}
+              </div>
+            )}
+
+            <IonButton onClick={closeModal}>Cerrar</IonButton>
+          </IonContent>
+        </IonModal>
       </IonContent>
     </IonPage>
   );
 };
 
 export default Tab4;
-
