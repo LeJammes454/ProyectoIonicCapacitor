@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { cameraOutline, documentAttachOutline, earOutline, earthOutline, ellipse, idCard, idCardOutline, mapOutline, navigateOutline, notificationsOutline, shareSocial, shareSocialOutline, square, triangle } from 'ionicons/icons';
+import { cameraOutline, documentAttachOutline, earOutline, earthOutline, ellipse, idCard, idCardOutline, mapOutline, navigateOutline, notificationsOutline, radioOutline, readerOutline, shareSocial, shareSocialOutline, square, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -81,8 +81,8 @@ const App: React.FC = () => (
             </IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab4" href="/tab4">
-            <IonIcon aria-hidden="true" icon={earthOutline} />
-            <IonLabel>Navegador</IonLabel>
+            <IonIcon aria-hidden="true" icon={radioOutline} />
+            <IonLabel>Haptica</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab5" href="/tab5">
             <IonIcon aria-hidden="true" icon={idCardOutline} />

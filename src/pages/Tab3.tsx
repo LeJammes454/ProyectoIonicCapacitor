@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Toast } from '@capacitor/toast';
 import React, { useState } from 'react';
@@ -6,6 +6,7 @@ import './Tab3.css';
 
 const Tab3: React.FC = () => {
   const [alarmTime, setAlarmTime] = useState('');
+  const [alarms, setAlarms] = useState<string[]>([]);
 
   const scheduleAlarm = async () => {
     if (alarmTime === '') {
@@ -23,14 +24,24 @@ const Tab3: React.FC = () => {
         {
           title: '¡Alarma!',
           body: '¡Es hora de despertar!',
-          id: 1,
+          id: alarms.length + 1,
           schedule: { at: alarmDateTime },
           sound: 'beep.wav', // Opcional: Ruta al archivo de sonido de la alarma
         }
       ]
     });
 
+    setAlarms([...alarms, alarmTime]);
     showToast('Alarma programada correctamente');
+    setAlarmTime('');
+  };
+
+  const removeAlarm = async (index: number) => {
+    const updatedAlarms = [...alarms];
+    updatedAlarms.splice(index, 1);
+    setAlarms(updatedAlarms);
+    await LocalNotifications.cancel({ notifications: [{ id: index + 1 }] });
+    showToast('Alarma eliminada');
   };
 
   const showToast = async (message: string) => {
@@ -56,6 +67,15 @@ const Tab3: React.FC = () => {
           </IonItem>
           <IonButton onClick={scheduleAlarm}>Programar alarma</IonButton>
         </div>
+
+        <IonList>
+          {alarms.map((alarm, index) => (
+            <IonItem key={index}>
+              <IonLabel>{alarm}</IonLabel>
+              <IonButton fill="clear" slot="end" onClick={() => removeAlarm(index)}>Eliminar</IonButton>
+            </IonItem>
+          ))}
+        </IonList>
       </IonContent>
     </IonPage>
   );

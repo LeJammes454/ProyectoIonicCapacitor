@@ -22,7 +22,7 @@ const Tab5: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 5</IonTitle>
+          <IonTitle>Información del Dispositivo</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
