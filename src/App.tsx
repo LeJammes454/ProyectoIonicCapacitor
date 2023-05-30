@@ -66,33 +66,39 @@ const App: React.FC = () => (
             <Redirect to="/tab1" />
           </Route>
         </IonRouterOutlet>
+
+        
+
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon aria-hidden="true" icon={cameraOutline} />
-            <IonLabel>Camera</IonLabel>
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon aria-hidden="true" icon={navigateOutline} />
-            <IonLabel>Geolocalicacion</IonLabel>
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon aria-hidden="true" icon={notificationsOutline} />
-            <IonLabel>Notificaiones
+            <IonLabel>
             </IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab4" href="/tab4">
             <IonIcon aria-hidden="true" icon={radioOutline} />
-            <IonLabel>Haptica</IonLabel>
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab5" href="/tab5">
             <IonIcon aria-hidden="true" icon={idCardOutline} />
-            <IonLabel>Device</IonLabel>
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab6" href="/tab6">
             <IonIcon aria-hidden="true" icon={shareSocialOutline} />
-            <IonLabel>Compartir</IonLabel>
+            <IonLabel></IonLabel>
           </IonTabButton>
         </IonTabBar>
+        
+
+        
       </IonTabs>
     </IonReactRouter>
   </IonApp>
